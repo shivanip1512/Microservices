@@ -2,10 +2,13 @@ package com.springboot.restfulwebservice.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.springboot.restfulwebservice.dto.UserDTO;
 import com.springboot.restfulwebservice.entity.User;
+import com.springboot.restfulwebservice.mapper.UserMapper;
 import com.springboot.restfulwebservice.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -17,38 +20,41 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Override
-	public User createUser(User user) {
-		return userRepository.save(user);
+	public UserDTO createUser(UserDTO userDto) {
+		User user = UserMapper.mapToUser(userDto);
+		User savedUser = userRepository.save(user);
+		return UserMapper.mapToUserDto(savedUser);
 	}
 
 	@Override
-	public User getUser(Integer userId) {
+	public UserDTO getUser(Integer userId) {
 		Optional<User> optionalUser = userRepository.findById(userId);
-		return optionalUser.isPresent() ? optionalUser.get() : null;
+		return optionalUser.isPresent() ? UserMapper.mapToUserDto(optionalUser.get()) : null;
 	}
 
 	@Override
-	public List<User> getAll() {
-		return userRepository.findAll();
+	public List<UserDTO> getAll() {
+		List<User> users = userRepository.findAll();
+		return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
 	}
 
 	@Override
-	public User updateUser(User user) {
-		User existingUser = getUser(user.getId());
-		if (existingUser != null) {
-			existingUser.setName(user.getName());
-			existingUser.setEmail(user.getEmail());
-			userRepository.save(existingUser);
+	public UserDTO updateUser(UserDTO user) {
+		UserDTO existingUserDto = getUser(user.getId());
+		if (existingUserDto != null) {
+			existingUserDto.setName(user.getName());
+			existingUserDto.setEmail(user.getEmail());
+			userRepository.save(UserMapper.mapToUser(existingUserDto));
 		}
-		return existingUser;
+		return existingUserDto;
 	}
 
 	@Override
-	public User deleteUser(Integer userId) {
-		User user = getUser(userId);
-		if (user != null)
+	public UserDTO deleteUser(Integer userId) {
+		UserDTO userDto = getUser(userId);
+		if (userDto != null)
 			userRepository.deleteById(userId);
-		return user;
+		return userDto;
 	}
 
 }

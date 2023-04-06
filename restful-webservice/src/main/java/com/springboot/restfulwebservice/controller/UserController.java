@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.restfulwebservice.dto.UserDTO;
 import com.springboot.restfulwebservice.entity.User;
 import com.springboot.restfulwebservice.service.UserService;
 
@@ -27,36 +28,36 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/save")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
+	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+		return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<User> getUser(@PathVariable Integer id) {
-		User user = userService.getUser(id);
-		HttpStatus httpStatus = getHttpStatusCode(user);
-		return new ResponseEntity<User>(user, httpStatus);
+	public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
+		UserDTO userDTO = userService.getUser(id);
+		HttpStatus httpStatus = getHttpStatusCode(userDTO);
+		return new ResponseEntity<UserDTO>(userDTO, httpStatus);
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<User>> getAll(){
-		List<User> users = userService.getAll();
-		HttpStatus httpStatus = getHttpStatusCode(users);
-		return new ResponseEntity<List<User>>(users, httpStatus);
+	public ResponseEntity<List<UserDTO>> getAll() {
+		List<UserDTO> userDtos = userService.getAll();
+		HttpStatus httpStatus = getHttpStatusCode(userDtos);
+		return new ResponseEntity<List<UserDTO>>(userDtos, httpStatus);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable("id") Integer userId, @RequestBody User user) {
-		user.setId(userId);
-		User updatedUser = userService.updateUser(user);
-		HttpStatus httpStatus = getHttpStatusCode(updatedUser);
-		return new ResponseEntity<User>(updatedUser, httpStatus);
+	public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Integer userId, @RequestBody UserDTO userDto) {
+		userDto.setId(userId);
+		UserDTO updatedUserDto = userService.updateUser(userDto);
+		HttpStatus httpStatus = getHttpStatusCode(updatedUserDto);
+		return new ResponseEntity<UserDTO>(updatedUserDto, httpStatus);
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable Integer id){
-		User deletedUser = userService.deleteUser(id);
-		return new ResponseEntity<User>(deletedUser,getHttpStatusCode(deletedUser));
+	public ResponseEntity<UserDTO> deleteUser(@PathVariable Integer id) {
+		UserDTO deletedUserDto = userService.deleteUser(id);
+		return new ResponseEntity<UserDTO>(deletedUserDto, getHttpStatusCode(deletedUserDto));
 	}
 
 	private HttpStatus getHttpStatusCode(Object obj) {
