@@ -20,6 +20,6 @@ public class UserMapper {
 	 * @return returns user
 	 */
 	public static User mapToUser(UserDTO userDTO) {
-		return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+		return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmailAddress());
 	}
 }
