@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.restfulwebservice.dto.UserDTO;
 import com.springboot.restfulwebservice.entity.User;
+import com.springboot.restfulwebservice.exception.ResourceAlreadyExistException;
+import com.springboot.restfulwebservice.exception.ResourceNotFoundException;
 import com.springboot.restfulwebservice.mapper.AutoUserMapper;
 import com.springboot.restfulwebservice.mapper.UserMapper;
 import com.springboot.restfulwebservice.repository.UserRepository;
@@ -24,7 +26,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO createUser(UserDTO userDto) {
-		System.out.println("userDto : "+userDto);
+		
+		Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmailAddress());
+		
+		if(userByEmail.isPresent()) {
+			throw new ResourceAlreadyExistException("Email Already Exists for User");
+		}
+		
+		
 		// User user = UserMapper.mapToUser(userDto);
 		// User user = modelMapper.map(userDto, User.class);
 		User user = AutoUserMapper.MAPPER.mapToUser(userDto);
@@ -38,10 +47,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO getUser(Integer userId) {
-		Optional<User> optionalUser = userRepository.findById(userId);
+		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 		// return optionalUser.isPresent() ? UserMapper.mapToUserDto(optionalUser.get()) : null;
 		// return optionalUser.isPresent() ? modelMapper.map(optionalUser.get(), UserDTO.class) : null;
-		return optionalUser.isPresent() ? AutoUserMapper.MAPPER.maptoUserDTO(optionalUser.get()) : null;
+		return AutoUserMapper.MAPPER.maptoUserDTO(user);
 	}
 
 	@Override
@@ -54,22 +63,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO updateUser(UserDTO user) {
-		UserDTO existingUserDto = getUser(user.getId());
-		if (existingUserDto != null) {
-			existingUserDto.setName(user.getName());
-			existingUserDto.setEmailAddress(user.getEmailAddress());
-			// userRepository.save(UserMapper.mapToUser(existingUserDto));
-			// userRepository.save(modelMapper.map(existingUserDto, User.class));
-			userRepository.save(AutoUserMapper.MAPPER.mapToUser(existingUserDto));
-		}
-		return existingUserDto;
+		User repoUser = userRepository.findById(user.getId()).orElseThrow(()->new ResourceNotFoundException("User", "id", user.getId()));
+		repoUser.setName(user.getName());
+		repoUser.setEmail(user.getEmailAddress());
+		User savedUser = userRepository.save(repoUser);
+		// return UserMapper.mapToUserDto(savedUser);
+		// return modelMapper.map(savedUser, UserDTO.class);
+		return AutoUserMapper.MAPPER.maptoUserDTO(savedUser);
 	}
 
 	@Override
 	public UserDTO deleteUser(Integer userId) {
 		UserDTO userDto = getUser(userId);
-		if (userDto != null)
-			userRepository.deleteById(userId);
+		userRepository.deleteById(userId);
 		return userDto;
 	}
 
