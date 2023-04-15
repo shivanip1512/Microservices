@@ -1,12 +1,10 @@
 package com.springboot.restfulwebservice.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 
 import com.springboot.restfulwebservice.dto.UserDTO;
-import com.springboot.restfulwebservice.entity.User;
-import com.springboot.restfulwebservice.exception.ErrorDetails;
-import com.springboot.restfulwebservice.exception.ResourceNotFoundException;
 import com.springboot.restfulwebservice.service.UserService;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -33,7 +27,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/save")
-	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
 		return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
 	}
 
@@ -52,7 +46,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Integer userId, @RequestBody UserDTO userDto) {
+	public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Integer userId, @Valid @RequestBody UserDTO userDto) {
 		userDto.setId(userId);
 		UserDTO updatedUserDto = userService.updateUser(userDto);
 		HttpStatus httpStatus = getHttpStatusCode(updatedUserDto);
