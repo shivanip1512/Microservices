@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 
-@SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Spring Boot Rest API documentation", 
 								description = "Spring Boot Rest API documentation", 
 								version = "1.0.0-SNAPSHOT", 
@@ -27,6 +26,7 @@ import io.swagger.v3.oas.annotations.info.License;
 										description = "Spring boot User Management documentation",
 										url = "https://shivanip1512.github.io/user_management.html")
 				  )
+@SpringBootApplication
 public class RestfulWebserviceApplication {
 
 	public static void main(String[] args) {
