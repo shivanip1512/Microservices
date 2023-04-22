@@ -1,6 +1,5 @@
-package com.java.microservice.departmentservice.entity;
+package com.java.microservice.departmentservice.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -8,11 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Table(name="departments")
-public class Department {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DepartmentDTO {
     private Long id;
     private String departmentName;
     private String departmentDescription;
