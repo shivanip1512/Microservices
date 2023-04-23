@@ -2,6 +2,7 @@ package com.java.microservice.employeeservice.service.impl;
 
 import com.java.microservice.employeeservice.dto.EmployeeDTO;
 import com.java.microservice.employeeservice.entity.Employee;
+import com.java.microservice.employeeservice.exception.ResourceNotFoundException;
 import com.java.microservice.employeeservice.mapper.AutoEmployeeMapper;
 import com.java.microservice.employeeservice.repository.EmployeeRepository;
 import com.java.microservice.employeeservice.service.EmployeeService;
@@ -23,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO getEmployeeById(Long id) {
-        Employee employeeById = empRepository.findById(id).get();
+        Employee employeeById = empRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Employee","id",id));
         return AutoEmployeeMapper.AUTO_EMPLOYEE_MAPPER.mapToEmployeeDTO(employeeById);
     }
 }
