@@ -2,7 +2,8 @@ package com.java.microservice.departmentservice.service.impl;
 
 import com.java.microservice.departmentservice.dto.DepartmentDTO;
 import com.java.microservice.departmentservice.entity.Department;
-import com.java.microservice.departmentservice.entity.mapper.AutoDepartmentMapper;
+import com.java.microservice.departmentservice.exception.ResourceNotFoundException;
+import com.java.microservice.departmentservice.mapper.AutoDepartmentMapper;
 import com.java.microservice.departmentservice.repository.DepartmentRepository;
 import com.java.microservice.departmentservice.service.DepartmentService;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDTO getDepartmentByCode(String code) {
         Department departmentByDepartmentCode = departmentRepository.findByDepartmentCode(code);
+        if(departmentByDepartmentCode==null){
+            throw new ResourceNotFoundException("Department","Department Code",code);
+        }
         return AutoDepartmentMapper.AUTO_DEPARTMENT_MAPPER.mapToDepartmentDTO(departmentByDepartmentCode);
     }
 

@@ -1,4 +1,4 @@
-package com.java.microservice.departmentservice.entity.mapper;
+package com.java.microservice.departmentservice.mapper;
 
 import com.java.microservice.departmentservice.dto.DepartmentDTO;
 import com.java.microservice.departmentservice.entity.Department;
