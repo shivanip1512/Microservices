@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "d67643ca-afc1-4838-953f-23f818a15943",
+		"name": "API-GATEWAY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get employee by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9191/api/employees/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"api",
+						"employees",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get employee by id - Auto Routing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9191/employee-service/api/employees/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"employee-service",
+						"api",
+						"employees",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get dept by deptCode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9191/api/departments/EASW-SW",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"api",
+						"departments",
+						"EASW-SW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get dept by deptCode - Auto Routing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9191/department-service/api/departments/EASW-SW",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"department-service",
+						"api",
+						"departments",
+						"EASW-SW"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
